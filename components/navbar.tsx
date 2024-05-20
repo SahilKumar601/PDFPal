@@ -27,7 +27,7 @@ const Navbar=()=>{
                             <RegisterLink className={buttonVariants({
                                 size:'sm',
                                 
-                            })}> Sign Up <ArrowBigRightIcon/></RegisterLink>
+                            })}> Get Started <ArrowBigRightIcon/></RegisterLink>
                         </>
                     </div>
                 </div>
