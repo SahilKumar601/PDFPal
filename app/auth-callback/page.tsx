@@ -1,17 +1,46 @@
+'use client'
 import { useRouter, useSearchParams } from "next/navigation";
 import { trpc } from "../_trpc/client";
+import { Loader2 } from "lucide-react";
 
 const Page = () =>{
     const router = useRouter()
 
     const searchParams = useSearchParams()
-    const orgin = searchParams.get('origin')
-    const {data,isLoading} = trpc.authCallback.useQuery(undefined,{
-        // onSuccess: ({ success }) => {
-        //     if (success) {
-        //       router.push(origin ? origin : '/dashboard');
-        //     }
-        //   },
+    const origin = searchParams.get('origin')
+    const query = trpc.authCallback.useQuery(undefined,{
+        retry:true,
+        retryDelay:500,
     })
+    console.log(query)
+    console.log(query.data)
+    if (!query.data) {
+        // console.log("ERROR OCCURED")
+        // const errData = query.error.data;
+        // if (errData?.code === 'UNAUTHORIZED') {
+        //     router.push('/sign-in');
+        // } else {
+        // console.error("An error occurred:", query.error);
+        // }
+        router.push('/api/auth/login');
+    }
+  if (query.data?.success) {
+    router.push(origin ? `/${origin}` : '/dashboard');
+  }
+  return(
+    <div className="w-full mt-24 flex justify-center">
+        <div className="flex flex-col items-center gap-2">
+            <Loader2 className="h-8 w-8 animate-spin text-zinc-800" />
+            <h3 className="font-semibold text-xl">
+                Setting up your account...
+            </h3>
+            <p>
+              You will be redirected shortly...  
+            </p>
+        </div>
+    </div>
+  )
+
 }   
 export default Page;
+  
