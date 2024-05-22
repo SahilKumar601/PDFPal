@@ -7,7 +7,13 @@ import Link from "next/link";
 import {format} from 'date-fns'
 import { Button } from "./ui/button";
 const Dashboard = ()=>{
+    const utlis = trpc.useContext()
     const {data:files,isLoading} =trpc.getUserFiles.useQuery()
+    const {mutate:deleteFile} = trpc.deleteFile.useMutation({
+        onSuccess:()=>{
+            utlis.getUserFiles.invalidate()
+        }
+    })
     return (
       <main className="mx-auto max-w-7xl md:p-10">
         <div className="mt-8 flex flex-col items-center justify-between gap-4 border-b border-gray-200 pb-5 sm:flex-row sm:items-center sm:gap-0">
@@ -44,7 +50,7 @@ const Dashboard = ()=>{
                         <MessageSquare className="h-4 w-4"/>
                         Mocked
                         </div>
-                        <Button className="w-full" size='sm' variant='destructive'>
+                        <Button onClick={()=>deleteFile({id:file.id})} className="w-full" size='sm' variant='destructive'>
                             <Trash className="h-4 w-4"/>
                         </Button>
                     </div>
