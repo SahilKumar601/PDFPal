@@ -1,17 +1,25 @@
 'use client'
 import { trpc } from "@/app/_trpc/client";
 import UploadButton from "./uploadButton";
-import { Ghost, MessageSquare, Plus, Trash } from "lucide-react";
+import { Ghost, Loader2, MessageSquare, Plus, Trash } from "lucide-react";
 import Skeleton from 'react-loading-skeleton'
 import Link from "next/link";
 import {format} from 'date-fns'
 import { Button } from "./ui/button";
+import { useState } from "react";
 const Dashboard = ()=>{
+    const [currentFile,setCurrentFile] = useState<String|null>()
     const utlis = trpc.useContext()
     const {data:files,isLoading} =trpc.getUserFiles.useQuery()
     const {mutate:deleteFile} = trpc.deleteFile.useMutation({
         onSuccess:()=>{
             utlis.getUserFiles.invalidate()
+        },
+        onMutate({id}){
+          setCurrentFile(id)
+        },
+        onSettled(){
+          setCurrentFile(null)
         }
     })
     return (
@@ -41,17 +49,19 @@ const Dashboard = ()=>{
                                 </div>
                         </div>
                     </Link>
-                    <div className="px-6 mt-4 grid grid-cols-3 place-items-center py-2 gap-6 test-xs text-zinc-500">
-                        <div className=" flex items-center gap-2">
+                    <div className="px-4 mt-4 grid grid-cols-3 place-items-center py-2 gap-5 test-xs text-zinc-500">
+                        <div className="flex items-center gap-2">
                                 <Plus className="w-4 h-4"/>
-                                {format(new Date(file.created_at),'MMM yyyy')}
+                                {format(new Date(file.created_at),'dd MMM yyyy')}
                         </div>
                         <div>
                         <MessageSquare className="h-4 w-4"/>
                         Mocked
                         </div>
                         <Button onClick={()=>deleteFile({id:file.id})} className="w-full" size='sm' variant='destructive'>
-                            <Trash className="h-4 w-4"/>
+                            {currentFile === file.id ? (
+                              <Loader2 className="h-4 w-4 animate-spin"/>
+                            ) : (<Trash className="h-4 w-4"/>)}
                         </Button>
                     </div>
 
