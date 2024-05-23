@@ -35,6 +35,9 @@ export const appRouter = router({
             } 
         })        
     }),
+    getFiles:privateProcedure.input(z.object({ key:z.string()})).mutation(async({ctx})=>{
+        const {userId} = ctx
+    }),
     deleteFile: privateProcedure.input(
         z.object({ id:z.string()}),
     ).mutation(async ({ctx,input})=>{
@@ -53,7 +56,6 @@ export const appRouter = router({
             }
         })
         return file
-    })
-
+    }),
 });
 export type AppRouter = typeof appRouter;
