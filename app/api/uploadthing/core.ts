@@ -22,6 +22,7 @@ export const ourFileRouter = {
             uploadstatus:'PROCESSING',
           },
         })
+        console.log(file.url)
     }),
 } satisfies FileRouter;
  

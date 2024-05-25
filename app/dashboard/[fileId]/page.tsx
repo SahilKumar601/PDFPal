@@ -6,18 +6,18 @@ import { notFound, redirect } from "next/navigation";
 
 interface PageProps {
     params: {
-        fileid:string
+        fileId:string,
     };
 }
 
 const Page = async({params}:PageProps)=>{
-    const {fileid} = params
+    const {fileId} = params;
     const {getUser} = getKindeServerSession()
     const user = await getUser() 
-    if(!user || !user.id) redirect(`/auth-callback?origin=dashboard/${fileid}`)
+    if(!user || !user.id) redirect(`/auth-callback?origin=dashboard/${fileId}`)
     const file = await db.file.findFirst({ 
         where:{
-            id:fileid,
+            id:fileId,
             userId:user.id,
         }
     })
