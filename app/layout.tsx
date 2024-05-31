@@ -3,11 +3,12 @@ import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/navbar";
 import Providers from "@/components/providers";
+import { Toast } from "@/components/ui/toast";
+import { Toaster } from "@/components/ui/toaster";
 
 import "./globals.css";
 import 'react-loading-skeleton/dist/skeleton.css'
-import { Toast } from "@/components/ui/toast";
-import { Toaster } from "@/components/ui/toaster";
+import 'simplebar-react/dist/simplebar.min.css'
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
