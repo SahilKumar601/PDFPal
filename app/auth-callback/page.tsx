@@ -12,16 +12,7 @@ const Page = () =>{
         retry:true,
         retryDelay:500,
     })
-    console.log(query)
-    console.log(query.data)
     if (!query.data) {
-        // console.log("ERROR OCCURED")
-        // const errData = query.error.data;
-        // if (errData?.code === 'UNAUTHORIZED') {
-        //     router.push('/sign-in');
-        // } else {
-        // console.error("An error occurred:", query.error);
-        // }
         router.push('/api/auth/login');
     }
   if (query.data?.success) {
